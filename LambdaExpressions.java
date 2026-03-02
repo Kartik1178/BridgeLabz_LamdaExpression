@@ -1,28 +1,44 @@
 /*
- * UC8: Validate Password Rule 4 using Lambda Expression
- * This class provides validation logic for
- * user password according to the rules:
- * 1. Minimum 8 characters
- * 2. At least 1 uppercase letter
- * 3. At least 1 numeric digit
- * 4. Exactly 1 special character
- * Valid: Password1@
- * Invalid: Password@@1 (2 special chars), password1@ (no uppercase)
+ * UC9: Validate Multiple Email Samples using Lambda Expression
+ * This class validates multiple email inputs
+ * according to the required email pattern rules.
+ * Valid emails: abc@bl.co, abc.xyz@bl.co.in
+ * Invalid emails: abc@.co, abc@bl, @bl.co
  */
 
 import java.util.function.Predicate;
 
 public class LambdaExpressions {
 
-    // Lambda function to validate password with all rules including exactly 1 special character
-    private static final Predicate<String> validatePasswordRule4 =
-            password -> password.matches("^(?=.*[A-Z])(?=.*[0-9])(?=[^@#$%^&+=]*[@#$%^&+=][^@#$%^&+=]*$).{8,}$");
+    // Lambda function to validate email format
+    private static final Predicate<String> validateEmail =
+            email -> email.matches("^[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)?@[a-zA-Z]+\\.co(\\.[a-zA-Z]{2})?$");
 
     public static void main(String[] args) {
-        System.out.println(validatePasswordRule4.test("Password1@"));  // true
-        System.out.println(validatePasswordRule4.test("Abcdefg1#"));   // true
-        System.out.println(validatePasswordRule4.test("Password@@1")); // false (2 special chars)
-        System.out.println(validatePasswordRule4.test("password1@"));  // false (no uppercase)
-        System.out.println(validatePasswordRule4.test("Pass1"));       // false (length < 8)
+
+        String[] validEmails = {
+                "abc@bl.co",
+                "abc.xyz@bl.co",
+                "abc@bl.co.in",
+                "abc.xyz@bl.co.in"
+        };
+
+        String[] invalidEmails = {
+                "abc@.co",
+                "abc@bl",
+                "@bl.co",
+                "abc@bl.",
+                "abcbl.co"
+        };
+
+        System.out.println("Valid Email Tests:");
+        for (String email : validEmails) {
+            System.out.println(email + " -> " + validateEmail.test(email));
+        }
+
+        System.out.println("\nInvalid Email Tests:");
+        for (String email : invalidEmails) {
+            System.out.println(email + " -> " + validateEmail.test(email));
+        }
     }
 }
