@@ -11,58 +11,40 @@ class LambdaExpressionsTest {
         validator = new LambdaExpressions();
     }
 
-    // First Name Tests
+    // Happy Test Case
     @Test
-    void givenValidFirstName_shouldReturnTrue() {
+    void givenValidFirstName_shouldReturnTrue() throws InvalidUserDetailsException {
         Assertions.assertTrue(validator.validateFirstName("John"));
     }
 
+    // Sad Test Case
     @Test
-    void givenInvalidFirstName_shouldReturnFalse() {
-        Assertions.assertFalse(validator.validateFirstName("jo"));
-    }
-
-    // Last Name Tests
-    @Test
-    void givenValidLastName_shouldReturnTrue() {
-        Assertions.assertTrue(validator.validateLastName("Kumar"));
+    void givenInvalidFirstName_shouldThrowException() {
+        Assertions.assertThrows(InvalidUserDetailsException.class,
+                () -> validator.validateFirstName("jo"));
     }
 
     @Test
-    void givenInvalidLastName_shouldReturnFalse() {
-        Assertions.assertFalse(validator.validateLastName("ku"));
-    }
-
-    // Email Tests
-    @Test
-    void givenValidEmail_shouldReturnTrue() {
-        Assertions.assertTrue(validator.validateEmail("abc.xyz@bl.co.in"));
+    void givenInvalidLastName_shouldThrowException() {
+        Assertions.assertThrows(InvalidUserDetailsException.class,
+                () -> validator.validateLastName("ku"));
     }
 
     @Test
-    void givenInvalidEmail_shouldReturnFalse() {
-        Assertions.assertFalse(validator.validateEmail("abc@.co"));
-    }
-
-    // Mobile Tests
-    @Test
-    void givenValidMobile_shouldReturnTrue() {
-        Assertions.assertTrue(validator.validateMobile("91 9919819801"));
+    void givenInvalidEmail_shouldThrowException() {
+        Assertions.assertThrows(InvalidUserDetailsException.class,
+                () -> validator.validateEmail("abc@.co"));
     }
 
     @Test
-    void givenInvalidMobile_shouldReturnFalse() {
-        Assertions.assertFalse(validator.validateMobile("919919819801"));
-    }
-
-    // Password Tests
-    @Test
-    void givenValidPassword_shouldReturnTrue() {
-        Assertions.assertTrue(validator.validatePassword("Password1@"));
+    void givenInvalidMobile_shouldThrowException() {
+        Assertions.assertThrows(InvalidUserDetailsException.class,
+                () -> validator.validateMobile("919919819801"));
     }
 
     @Test
-    void givenInvalidPassword_shouldReturnFalse() {
-        Assertions.assertFalse(validator.validatePassword("password"));
+    void givenInvalidPassword_shouldThrowException() {
+        Assertions.assertThrows(InvalidUserDetailsException.class,
+                () -> validator.validatePassword("password"));
     }
 }

@@ -14,7 +14,7 @@ class LambdaExpressionsParameterizedTest {
             "abc@bl.co.in",
             "abc.xyz@bl.co.in"
     })
-    void givenValidEmails_shouldReturnTrue(String email) {
+    void givenValidEmails_shouldReturnTrue(String email) throws InvalidUserDetailsException {
         Assertions.assertTrue(validator.validateEmail(email));
     }
 
@@ -27,7 +27,8 @@ class LambdaExpressionsParameterizedTest {
             "abc@bl.",
             "abcbl.co"
     })
-    void givenInvalidEmails_shouldReturnFalse(String email) {
-        Assertions.assertFalse(validator.validateEmail(email));
+    void givenInvalidEmails_shouldThrowException(String email) {
+        Assertions.assertThrows(InvalidUserDetailsException.class,
+                () -> validator.validateEmail(email));
     }
 }
