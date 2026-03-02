@@ -1,24 +1,28 @@
 /*
- * UC3: Validate Email using Lambda Expression
+ * UC4: Validate Mobile Number using Lambda Expression
  * This class provides validation logic for
- * user email according to the rule:
- * 1. Email format like abc.xyz@bl.co.in
- * 2. Mandatory parts: abc, bl, co
- * 3. Optional parts: xyz and in
- * 4. Must contain proper '@' and '.' positions
- * Valid: abc@bl.co, abc.xyz@bl.co.in
- * Invalid: abc@.co, abc@bl, @bl.co
+ * user mobile number according to the rule:
+ * 1. Format should be: CountryCode space 10-digit-number
+ * 2. Example: 91 9919819801
+ * 3. Country code must be 2 digits
+ * 4. Mobile number must be exactly 10 digits
+ * Valid: 91 9919819801
+ * Invalid: 919919819801, 91-9919819801, 91 99198
  */
+
 import java.util.function.Predicate;
+
 public class LambdaExpressions {
-    // Lambda function to validate email using regex
-    private static final Predicate<String> validateEmail =
-            email -> email.matches("^[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)?@[a-zA-Z]+\\.co(\\.[a-zA-Z]{2})?$");
+
+    // Lambda function to validate mobile number using regex
+    private static final Predicate<String> validateMobile =
+            mobile -> mobile.matches("^[0-9]{2} [0-9]{10}$");
+
     public static void main(String[] args) {
-        System.out.println(validateEmail.test("abc@bl.co"));          // true
-        System.out.println(validateEmail.test("abc.xyz@bl.co.in"));   // true
-        System.out.println(validateEmail.test("abc@.co"));            // false
-        System.out.println(validateEmail.test("abc@bl"));             // false
-        System.out.println(validateEmail.test("@bl.co"));             // false
+        System.out.println(validateMobile.test("91 9919819801")); // true
+        System.out.println(validateMobile.test("91 9876543210")); // true
+        System.out.println(validateMobile.test("919919819801"));  // false
+        System.out.println(validateMobile.test("91-9919819801")); // false
+        System.out.println(validateMobile.test("91 99198"));      // false
     }
 }
