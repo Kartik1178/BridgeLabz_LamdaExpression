@@ -1,58 +1,57 @@
 /*
- * UC12: Validator Class using Lambda Expressions with Custom Exceptions
- * Throws InvalidUserDetailsException when validation fails
- * for First Name, Last Name, Email, Mobile, and Password.
+ * UC13: Final Refactor using Lambda Functional Interface
+ * All validations are implemented using lambda expressions
+ * and custom functional interface UserValidator.
  */
 
-import java.util.function.Predicate;
-
 public class LambdaExpressions {
+    // Lambda implementations for each validation rule
 
-    // Lambda validators
-    private static final Predicate<String> firstNameValidator =
-            name -> name.matches("^[A-Z][a-zA-Z]{2,}$");
-
-    private static final Predicate<String> lastNameValidator =
-            name -> name.matches("^[A-Z][a-zA-Z]{2,}$");
-
-    private static final Predicate<String> emailValidator =
-            email -> email.matches("^[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)?@[a-zA-Z]+\\.co(\\.[a-zA-Z]{2})?$");
-
-    private static final Predicate<String> mobileValidator =
-            mobile -> mobile.matches("^[0-9]{2} [0-9]{10}$");
-
-    private static final Predicate<String> passwordValidator =
-            password -> password.matches("^(?=.*[A-Z])(?=.*[0-9])(?=[^@#$%^&+=]*[@#$%^&+=][^@#$%^&+=]*$).{8,}$");
-
-    // Methods that throw custom exception if invalid
-
-    public boolean validateFirstName(String name) throws InvalidUserDetailsException {
-        if (!firstNameValidator.test(name))
+    private final UserValidator firstNameValidator = input -> {
+        if (!input.matches("^[A-Z][a-zA-Z]{2,}$"))
             throw new InvalidUserDetailsException("Invalid First Name");
         return true;
-    }
+    };
 
-    public boolean validateLastName(String name) throws InvalidUserDetailsException {
-        if (!lastNameValidator.test(name))
+    private final UserValidator lastNameValidator = input -> {
+        if (!input.matches("^[A-Z][a-zA-Z]{2,}$"))
             throw new InvalidUserDetailsException("Invalid Last Name");
         return true;
+    };
+    private final UserValidator emailValidator = input -> {
+        if (!input.matches("^[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)?@[a-zA-Z]+\\.co(\\.[a-zA-Z]{2})?$"))
+            throw new InvalidUserDetailsException("Invalid Email");
+        return true;
+    };
+
+    private final UserValidator mobileValidator = input -> {
+        if (!input.matches("^[0-9]{2} [0-9]{10}$"))
+            throw new InvalidUserDetailsException("Invalid Mobile Number");
+        return true;
+    };
+
+    private final UserValidator passwordValidator = input -> {
+        if (!input.matches("^(?=.*[A-Z])(?=.*[0-9])(?=[^@#$%^&+=]*[@#$%^&+=][^@#$%^&+=]*$).{8,}$"))
+            throw new InvalidUserDetailsException("Invalid Password");
+        return true;
+    };
+    // Public wrapper methods
+
+    public boolean validateFirstName(String firstName) throws InvalidUserDetailsException {
+        return firstNameValidator.validate(firstName);
+    }
+
+    public boolean validateLastName(String lastName) throws InvalidUserDetailsException {
+        return lastNameValidator.validate(lastName);
     }
 
     public boolean validateEmail(String email) throws InvalidUserDetailsException {
-        if (!emailValidator.test(email))
-            throw new InvalidUserDetailsException("Invalid Email");
-        return true;
+        return emailValidator.validate(email);
     }
-
     public boolean validateMobile(String mobile) throws InvalidUserDetailsException {
-        if (!mobileValidator.test(mobile))
-            throw new InvalidUserDetailsException("Invalid Mobile Number");
-        return true;
+        return mobileValidator.validate(mobile);
     }
-
     public boolean validatePassword(String password) throws InvalidUserDetailsException {
-        if (!passwordValidator.test(password))
-            throw new InvalidUserDetailsException("Invalid Password");
-        return true;
+        return passwordValidator.validate(password);
     }
 }
